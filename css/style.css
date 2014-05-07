@@ -1,0 +1,13 @@
+/** Rogelio Noris **/
+
+header{background:url(style/bg.jpg) repeat-x;height: 263px;}
+.header-bg{background:url(style/bg-header2.jpg) no-repeat top center;height: 263px;}
+
+.logo{background:url(style/logo2.jpg); width: 153px;height: 217px;display: block;text-indent: -9999px;}
+
+.titulo-1{font-size: 25px;color: white;text-align: center;margin-top: 30px;}
+.titulo-2{font-size: 35px;color: white;text-align: center;}
+.titulo-3{font-size: 20px;color: white;text-align: center;display: block;}
+
+.login-wrapper{margin-top: 50px;}
+.login-wrapper .panel{width: 500px;margin: 0 auto;}
