@@ -8,6 +8,15 @@ header{background:url(style/bg.jpg) repeat-x;height: 263px;}
 .titulo-1{font-size: 25px;color: white;text-align: center;margin-top: 30px;}
 .titulo-2{font-size: 35px;color: white;text-align: center;}
 .titulo-3{font-size: 20px;color: white;text-align: center;display: block;}
-
+.fecha{display: block;font-size: 18px;color: white;text-align: center;margin-top: 20px;}
 .login-wrapper{margin-top: 50px;}
 .login-wrapper .panel{width: 500px;margin: 0 auto;}
+
+
+.contenido{margin-top: 20px;}
+.fullwidth{width: 100%;margin: 0;max-width: initial;}
+
+.no-margin{margin: 0px;}
+.no-padding{padding: 0px;}
+
+.form-custom .columns{padding: 0;}

@@ -27,31 +27,3 @@
         </section>
       </section>
     </header>
-
-    <section class="row login-wrapper">
-      <div class="panel">          
-          <form class="" method="post" action="" data-abide>
-            <fieldset>
-              <legend>Acceso</legend>
-              <div class="input-wrapper">
-                <input name="txtUsuario" type="text" placeholder="usuario" required>
-                <small class="error">El usuario es requerido.</small>
-              </div>
-              <div class="input-wrapper">
-                <input name="txtPassword" type="password" class="" placeholder="contraseña" required>
-                <small class="error">La contraseña es requerida.</small>
-              </div>
-               <button type="submit">Submit</button>
-             </fieldset>
-          </form>
-      </div>
-    </section>    
-    
-    <script src="lib/jquery.js"></script>
-    <script src="lib/foundation.min.js"></script>
-    <script src="lib/foundation.abide.js"></script>
-    <script>
-      $(document).foundation();
-    </script>
-  </body>
-</html>
