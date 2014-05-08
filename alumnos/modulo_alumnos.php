@@ -6,15 +6,17 @@
   <?php $sidebar_selected=1; ?>
   <link href="<?=$ruta;?>css/DT_bootstrap.css" rel="stylesheet">
   <section class="row fullwidth">
+    <!--
     <section class="large-2 columns">
-      <?php include("sidebar.php"); ?>
+      <?php /*include("sidebar.php");**/ ?>
     </section>
-    <section class="large-10 columns">
+    -->
+    <section class="large-12 columns">
       <?php
         require_once("../php/mysqlpdo.php");  
         $mysql = new DBMannager();    
         $mysql->connect();    
-        $query="SELECT a.*,b.rkey FROM alumnos a LEFT JOIN c_activos b ON a.id_alumno=b.id_alumno WHERE a.id_facultad=?";   
+        $query="SELECT a.*,b.rkey FROM alumnos a LEFT JOIN c_activos b ON a.id_alumno=b.id_alumno WHERE a.id_facultad=? AND a.status=1";   
         $mysql->execute($query,array($_SESSION['id_facultad']));      
         if($mysql->count() < 1){    
       ?>      
