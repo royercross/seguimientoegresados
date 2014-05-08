@@ -48,6 +48,7 @@
                       <th>Celular</th>
                       <th>E-mail</th>
                       <th>cuestionario 1</th>
+                      <th>Opciones</th>
                   </tr>
               </thead>
               <tbody>
@@ -61,6 +62,14 @@
                       <td><?=$alumno['telefono_celular'];?></td>
                       <td><?=$alumno['email'];?></td>
                       <td><a href="http://localhost/seguimientoegresados/quiz/pise.php?q=<?=$alumno['rkey'];?>" target="_blank">http://localhost/seguimientoegresados/cuestionarios/pise.php?q=<?=$alumno['rkey'];?></a></td>   
+                      <td class="tabla-acciones">
+                      <!--<a href="#" class="icon-edit" onclick="ver(<?=$alumno['id_alumno'];?>);return false;" style="margin-right:10px;"></a>-->
+                      <a href="#" class="icon-remove-circle" onclick="eliminar(<?=$alumno['id_alumno'];?>);return false;" ></a>
+                      <form style="display:none;" name="form<?=$alumno['id_alumno'];?>" id="form<?=$alumno['id_alumno'];?>" method="post">
+                        <input type="hidden" name="id_alumno" value="<?=$alumno['id_alumno'];?>" />
+                        <input type="hidden" name="accion" value="eliminar" />                            
+                      </form>
+                    </td>
                   </tr> 
                   <?php } ?>
               </tbody>
@@ -117,5 +126,13 @@
 				});
 		});				
 	});
+
+  function eliminar(id){    
+    bootbox.confirm("¿Seguro que deseas eliminar al alumno seleccionado?",function(resultado){
+      if(resultado){        
+        $('#form'+id).submit();
+      }
+    });   
+  }
 </script>
 <?php include("../piepagina.php"); ?>
