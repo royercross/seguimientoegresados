@@ -4,6 +4,7 @@
     <script src="<?=$ruta;?>lib/foundation.min.js"></script>
     <script src="<?=$ruta;?>lib/foundation.abide.js"></script>
     <script src="<?=$ruta;?>lib/foundation.alert.js"></script>
+    <script src="<?=$ruta;?>lib/foundation.tabs.js"></script>
     <?php } ?>
     <script>
       $(document).foundation();
