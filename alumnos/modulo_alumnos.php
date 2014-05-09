@@ -4,7 +4,6 @@
 <?php require_once("../menu.php"); ?>
 
   <?php $sidebar_selected=1; ?>
-  <link href="<?=$ruta;?>css/DT_bootstrap.css" rel="stylesheet">
   <section class="row fullwidth">
     <!--
     <section class="large-2 columns">
@@ -16,7 +15,7 @@
         require_once("../php/mysqlpdo.php");  
         $mysql = new DBMannager();    
         $mysql->connect();    
-        $query="SELECT a.*,b.rkey FROM alumnos a LEFT JOIN c_activos b ON a.id_alumno=b.id_alumno WHERE a.id_facultad=? AND a.status=1";   
+        $query="SELECT a.*,b.rkey FROM alumnos a LEFT JOIN c_activos b ON a.id_alumno=b.id_alumno WHERE a.id_facultad=? AND a.status=1 ORDER BY a.id_alumno DESC";   
         $mysql->execute($query,array($_SESSION['id_facultad']));      
         if($mysql->count() < 1){    
       ?>      
@@ -63,12 +62,12 @@
                       <td><?=$alumno['email'];?></td>
                       <td><a href="http://localhost/seguimientoegresados/quiz/pise.php?q=<?=$alumno['rkey'];?>" target="_blank">http://localhost/seguimientoegresados/cuestionarios/pise.php?q=<?=$alumno['rkey'];?></a></td>   
                       <td class="tabla-acciones">
-                      <!--<a href="#" class="icon-edit" onclick="ver(<?=$alumno['id_alumno'];?>);return false;" style="margin-right:10px;"></a>-->
-                      <a href="#" class="icon-remove-circle" onclick="eliminar(<?=$alumno['id_alumno'];?>);return false;" ></a>
-                      <form style="display:none;" name="form<?=$alumno['id_alumno'];?>" id="form<?=$alumno['id_alumno'];?>" method="post">
-                        <input type="hidden" name="id_alumno" value="<?=$alumno['id_alumno'];?>" />
-                        <input type="hidden" name="accion" value="eliminar" />                            
-                      </form>
+                       <!--<a href="#" class="icon-edit" onclick="ver(<?=$alumno['id_alumno'];?>);return false;" style="margin-right:10px;"></a>-->
+                        <a href="#" class="fi-x" onclick="eliminar(<?=$alumno['id_alumno'];?>);return false;" ></a>
+                        <form style="display:none;" name="form<?=$alumno['id_alumno'];?>" id="form<?=$alumno['id_alumno'];?>" method="post">
+                          <input type="hidden" name="id_alumno" value="<?=$alumno['id_alumno'];?>" />
+                          <input type="hidden" name="accion" value="eliminar" />                            
+                        </form>
                     </td>
                   </tr> 
                   <?php } ?>
@@ -107,7 +106,8 @@
       "oLanguage": {
         "sUrl": "../lib/languages/es_MX.txt"
       },
-      iDisplayLength: 50
+      iDisplayLength: 50,
+      aaSorting:[]
     });
   
     $('#btnAgregar').click(function(){  
@@ -128,11 +128,9 @@
 	});
 
   function eliminar(id){    
-    bootbox.confirm("¿Seguro que deseas eliminar al alumno seleccionado?",function(resultado){
-      if(resultado){        
+    if(confirm("¿Seguro que deseas eliminar al alumno seleccionado?")){    
         $('#form'+id).submit();
-      }
-    });   
+    }   
   }
 </script>
 <?php include("../piepagina.php"); ?>

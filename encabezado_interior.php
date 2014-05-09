@@ -6,6 +6,7 @@
     <title>Foundation | Welcome</title>
     <link rel="stylesheet" href="<?=$ruta;?>css/normalize.css" />
     <link rel="stylesheet" href="<?=$ruta;?>css/foundation.min.css" />
+    <link rel="stylesheet" href="<?=$ruta;?>css/foundation-icons.css" />
     <link rel="stylesheet" href="<?=$ruta;?>css/dataTables.foundation.css" />
     <link rel="stylesheet" href="<?=$ruta;?>css/style.css" />
     <script src="<?=$ruta;?>lib/modernizr.js"></script>

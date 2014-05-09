@@ -22,7 +22,7 @@ if(isset($_POST['id'])){
   <h4 class="modal-title">Datos del Alumno</h4>
   <div class="alert-box info" >Por favor, comprueba tus datos y llena los campos faltantes.</div>        
 
-  <form class="form-custom" method="post" action="" data-abide="ajax">      
+  <form class="form-custom" method="post" action="" data-abide>      
     <div class="large-12 columns">
       <label>Generación</label>
       <div class="input-wrapper">
@@ -33,9 +33,32 @@ if(isset($_POST['id'])){
 
     <!-- Text input-->
     <div class="large-12 columns">
+      <label  for="cmbCarrera">Carrera</label>
+      <div class="input-wrapper">
+        <select id="cmbCarrera" name="cmbCarrera" class="input-xlarge">
+            <?php
+                $query="SELECT * FROM carreras WHERE id_facultad=? AND status=1";
+                $mysql->execute($query,array($_SESSION['id_facultad']));      
+                while($row=$mysql->getRow()){ 
+                  $selected='';
+                  if($modificar){
+                    if($alumno['id_carrera']==$row['id_carrera']){
+                      $selected='selected';
+                    }
+                  }
+            ?>
+                <option <?=$selected;?> value="<?=$row['id_carrera'];?>"><?=$row['nombre_carrera'];?></option>
+            <?php } ?>
+        </select>
+      </div>
+    </div>    
+
+    <!-- Text input-->
+    <div class="large-12 columns">
       <label  for="txtNombre">Nombre</label>
       <div class="input-wrapper">
         <input value="<?=($modificar)?$alumno['nombre']:'';?>" id="txtNombre" name="txtNombre" type="text" placeholder="Nombre" class="input-xlarge"  required>            
+        <small class="error">Campo requerido.</small>
       </div>
     </div>
                       
@@ -44,6 +67,7 @@ if(isset($_POST['id'])){
       <label  for="txtApellidoPaterno">Apellido Paterno</label>
       <div class="input-wrapper">
         <input value="<?=($modificar)?$alumno['apellido_paterno']:'';?>" id="txtApellidoPaterno" name="txtApellidoPaterno" type="text" placeholder="Apellido paterno" class="input-xlarge" required>
+        <small class="error">Campo requerido.</small>
         
       </div>
     </div>
@@ -53,7 +77,7 @@ if(isset($_POST['id'])){
       <label  for="txtApellidoMaterno">Apellido Materno</label>
       <div class="input-wrapper">
         <input value="<?=($modificar)?$alumno['apellido_materno']:'';?>" id="txtApellidoMaterno" name="txtApellidoMaterno" type="text" placeholder="Apellido materno" class="input-xlarge" required>
-        
+        <small class="error">Campo requerido.</small>
       </div>
     </div>
     
@@ -116,35 +140,13 @@ if(isset($_POST['id'])){
       <div class="input-wrapper">
         <input value="<?=($modificar)?$alumno['cp']:'';?>" id="txtCP" name="txtCP" type="text" placeholder="Código Postal" class="input-xlarge">
       </div>
-    </div>
-    
-    <!-- Text input-->
-    <div class="large-12 columns">
-      <label  for="cmbCarrera">Carrera</label>
-      <div class="input-wrapper">
-        <select id="cmbCarrera" name="cmbCarrera" class="input-xlarge">
-            <?php
-                $query="SELECT * FROM carreras WHERE id_facultad=? AND status=1";
-                $mysql->execute($query,array($_SESSION['id_facultad']));      
-                while($row=$mysql->getRow()){ 
-                  $selected='';
-                  if($modificar){
-                    if($alumno['id_carrera']==$row['id_carrera']){
-                      $selected='selected';
-                    }
-                  }
-            ?>
-                <option <?=$selected;?> value="<?=$row['id_carrera'];?>"><?=$row['nombre_carrera'];?></option>
-            <?php } ?>
-        </select>
-      </div>
-    </div>                                             
+    </div>                                         
     
     <!-- Button -->
     <div class="large-12 columns">
       <label  for="btnGuardar"></label>
       <div class="input-wrapper">
-        <button id="btnGuardar" name="btnGuardar" class="btn btn-primary"><?=($modificar)?'Actualizar alumno':'Guardar alumno';?></button>
+        <input type="submit" id="btnGuardar" name="btnGuardar" class="button" value="<?=($modificar)?'Actualizar alumno':'Guardar alumno';?>" />
         <input type="hidden" name="id" value="<?=($modificar)?$id:'0';?>" />
         <input type="hidden" name="accion" value="<?=($modificar)?'modifica':'agrega';?>" />      
       </div>

@@ -7,6 +7,9 @@
     <?php } ?>
     <script>
       $(document).foundation();
+      $(document).ready(function(){
+        if($('.alert-hide').length){$('.alert-hide').fadeIn(1000);setTimeout(function(){$('.alert-hide').fadeOut(1000);},3000);}
+      });
     </script>
   </body>
 </html>
