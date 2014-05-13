@@ -84,6 +84,7 @@
 <script src="<?=$ruta;?>lib/foundation.abide.js"></script>
 <script src="<?=$ruta;?>lib/foundation.alert.js"></script>
 <script src="<?=$ruta;?>lib/highcharts.js"></script>
+<script src="<?=$ruta;?>lib/modules/data.js"></script>
 <script src="<?=$ruta;?>lib/modules/exporting.js"></script>
     
 <script>

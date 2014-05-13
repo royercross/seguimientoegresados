@@ -33,8 +33,7 @@
       <div class="contenido">
         <?php if(isset($_SESSION['mensaje'])){?>
         <div class="alert-box success alert-hide"><?=$_SESSION['mensaje'];?></div>       
-        <?php unset($_SESSION['mensaje']);} ?>
-        <div class="alert-box info" >Por favor, comprueba tus datos y llena los campos faltantes.</div>      
+        <?php unset($_SESSION['mensaje']);} ?>      
         <a href="#" class="button"  id="btnAgregar">Agregar Alumno</a>
       <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="tabla">    
             <thead>

@@ -48,3 +48,7 @@ header{background:url(style/bg.jpg) repeat-x;height: 263px;}
 .filtros{margin-top: 30px;overflow: hidden;}
 
 .grafica{min-width: 310px; height: 400px; margin: 0 auto;}
+
+.tabla-datos{width: 100%;margin-bottom: 0px;}
+.tabla-datos td{text-align: center;}
+.tabla-datos-total{width: 100%;}
