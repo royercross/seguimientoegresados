@@ -19,23 +19,27 @@
     if($grupo!="all"){
         switch($grupo){
             case 2: $preguntas_id = array(7,8,9); break;
+            case 3: $preguntas_id = array(13,17,18,19,22);break;
         }
 
         $query="SELECT * FROM c_preguntas WHERE id_pregunta IN (".implode(",",$preguntas_id).") ";
         //$mysql->execute($query,array($_SESSION['id_facultad']));   
         $mysql->execute($query);   
         $preguntas = $mysql->getArray();
-        for($i=0; $i < count($preguntas); $i++){            
-            $query="SELECT * FROM c_opciones_multiples WHERE id_pregunta = ?";
-            $mysql->execute($query,array($preguntas[$i]['id_pregunta']));   
+        for($i=0; $i < count($preguntas); $i++){           
 
-            $respuestas = $mysql->getArray();
-            $temporal = array();
-            foreach($respuestas as $respuesta){
-                $temporal[$respuesta['valor']] = $respuesta['opcion'];
+            if($preguntas[$i]['id_tipo_pregunta'] == 3 || $preguntas[$i]['id_tipo_pregunta'] == 4) {
+                $query="SELECT * FROM c_opciones_multiples WHERE id_pregunta = ?";
+                $mysql->execute($query,array($preguntas[$i]['id_pregunta']));   
+
+                $respuestas = $mysql->getArray();
+                $temporal = array();
+                foreach($respuestas as $respuesta){
+                    $temporal[$respuesta['valor']] = $respuesta['opcion'];
+                }
+                $preguntas[$i]['opciones'] = $temporal;
             }
-            $preguntas[$i]['opciones'] = $temporal;
-            //var_dump($respuestas);                    
+            
         }
         //print_r($preguntas);
         //$first=true;
@@ -61,6 +65,39 @@
                 $query="SELECT * FROM c_respuestas a INNER JOIN alumnos b ON a.id_alumno=b.id_alumno WHERE b.id_facultad=? AND a.id_pregunta IN (".implode(",",$preguntas_id).")";
                 $mysql->execute($query,array($_SESSION['id_facultad']));                   
                 $respuestas = $mysql->getArray();
+                $arrRespuestas=array();
+
+                foreach($respuestas as $respuesta){
+                    if(!isset($arrRespuestas[$respuesta['id_pregunta']]['total'])){
+                            $arrRespuestas[$respuesta['id_pregunta']]['total']=0;
+                    }
+                    if($respuesta['id_tipo_pregunta']==2){
+                        if(!isset($arrRespuestas[$respuesta['id_pregunta']][$respuesta['respuesta_numero']]))
+                        {
+                            $arrRespuestas[$respuesta['id_pregunta']][$respuesta['respuesta_numero']]=1;
+                            $arrRespuestas[$respuesta['id_pregunta']]['total']++;
+                        }else{
+                            $arrRespuestas[$respuesta['id_pregunta']][$respuesta['respuesta_numero']]++;
+                            $arrRespuestas[$respuesta['id_pregunta']]['total']++;
+                        }
+                    }else
+                    if($respuesta['id_tipo_pregunta']==3 || $respuesta['id_tipo_pregunta']==4){ 
+                        
+                        if(!isset($arrRespuestas[$respuesta['id_pregunta']][$respuesta['respuesta_opcion_multiple']]))
+                        {
+                            $arrRespuestas[$respuesta['id_pregunta']][$respuesta['respuesta_opcion_multiple']]=1;                            
+                            $arrRespuestas[$respuesta['id_pregunta']]['total']++;
+                        }else{
+                            $arrRespuestas[$respuesta['id_pregunta']][$respuesta['respuesta_opcion_multiple']]++;
+                            $arrRespuestas[$respuesta['id_pregunta']]['total']++;                            
+                        }                        
+                    }
+                    
+                }
+
+                //print_r($pregunta['opciones']);
+                //print_r($arrRespuestas);
+
         ?>                
             <div class="content <?php if($first){$first=false;echo 'active';}?>" id="panel-<?=$cont;?>">
                 <div class="rows">
@@ -68,14 +105,34 @@
                         <table id="tabla-datos-<?=$cont;?>" class="tabla-datos">
                             <thead>
                                 <th></th>
-                                <th>Alumno</th>
+                                <th>Cantidad</th>
                                 <th>%</th>
                             </thead>
                             <tbody> 
-                                <?php foreach($pregunta['opciones'] as $opcion){ ?>
-                                    <tr>
-                                        <td><?=$opcion;?></td>
-                                    </tr>                                    
+                                <?php 
+                                    if($pregunta['id_tipo_pregunta'] == 2){
+                                        ksort($arrRespuestas[$pregunta['id_pregunta']]);
+                                 ?>
+                                    <?php foreach($arrRespuestas[$pregunta['id_pregunta']] as $key=>$value){ ?>  
+                                        <?php if($key!="total") { ?>
+                                        <tr>
+                                            <td><?=$key;?></td>
+                                            <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?$arrRespuestas[$pregunta['id_pregunta']][$key]:'0';?></td>
+                                            <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?round($arrRespuestas[$pregunta['id_pregunta']][$key]*100/$arrRespuestas[$pregunta['id_pregunta']]['total'],2):'0';?></td>
+                                        </tr>                                    
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php $total_row="<tr><th>Total</th><th>".$arrRespuestas[$pregunta['id_pregunta']]['total']."</th><th>100%</th></tr>"; ?>                                 
+                                <?php } ?>                            
+                                <?php if($pregunta['id_tipo_pregunta'] == 3 || $pregunta['id_tipo_pregunta'] == 4){ ?>
+                                        <?php foreach($pregunta['opciones'] as $key=>$value){ ?>                                
+                                            <tr>
+                                                <td><?=$value;?></td>
+                                                <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?$arrRespuestas[$pregunta['id_pregunta']][$key]:'0';?></td>
+                                                <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?round($arrRespuestas[$pregunta['id_pregunta']][$key]*100/$arrRespuestas[$pregunta['id_pregunta']]['total'],2):'0';?></td>
+                                            </tr>                                    
+                                        <?php } ?>
+                                        <?php $total_row="<tr><th>Total</th><th>".$arrRespuestas[$pregunta['id_pregunta']]['total']."</th><th>100%</th></tr>"; ?>                                    
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -109,11 +166,8 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Alumnos por Carrera'
-                },
-                tooltip: {
-                  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },            
+                    text: '<?=$pregunta['pregunta'];?>'
+                },          
                 plotOptions: {
                     pie: {
                         allowPointSelect: true,
@@ -132,6 +186,7 @@
                     name: 'Carreras'
                 }]                
             });     
+            $("#tabla-datos-<?=$cont;?>").append("<?=$total_row;?>");
     <?php
         $cont++;
         }
@@ -220,7 +275,7 @@ GROUP BY a.id_carrera";
                 type: 'pie',
                 name: 'Carreras'                
             }]
-        }); 
+        });
         $("#tabla-datos").append("<?=$total_row;?>");
     });
 
