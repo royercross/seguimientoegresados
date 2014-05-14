@@ -52,3 +52,18 @@ header{background:url(style/bg.jpg) repeat-x;height: 263px;}
 .tabla-datos{width: 100%;margin-bottom: 0px;}
 .tabla-datos td{text-align: center;}
 .tabla-datos-total{width: 100%;}
+
+.tabs dd a{border-right: 1px solid #37342A;}
+
+@media only screen and (max-width: 40em) {
+    .logo{background:url(style/logo2.jpg); width: 80px;height: 113px;display: block;text-indent: -9999px;background-size: cover;margin-top: 50px;}
+    .titulo-1{font-size: 15px;}
+    .titulo-2{font-size: 20px;}
+    .titulo-3{font-size: 10px;}
+}
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+    .titulo-1{font-size: 20px;}
+    .titulo-2{font-size: 30px;}
+    .titulo-3{font-size: 15px;}
+}

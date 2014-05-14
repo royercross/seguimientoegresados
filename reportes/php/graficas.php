@@ -20,6 +20,7 @@
         switch($grupo){
             case 2: $preguntas_id = array(7,8,9); break;
             case 3: $preguntas_id = array(13,17,18,19,22);break;
+            case 4: $preguntas_id = array(25,26,27,28,35,37, 43,40,42,39);break;
         }
 
         $query="SELECT * FROM c_preguntas WHERE id_pregunta IN (".implode(",",$preguntas_id).") ";
@@ -60,7 +61,7 @@
         <?php
             $first=true;
             $cont=1;
-            foreach($preguntas as $pregunta){
+            foreach($preguntas as $pregunta_key=>$pregunta){
 
                 $query="SELECT * FROM c_respuestas a INNER JOIN alumnos b ON a.id_alumno=b.id_alumno WHERE b.id_facultad=? AND a.id_pregunta IN (".implode(",",$preguntas_id).")";
                 $mysql->execute($query,array($_SESSION['id_facultad']));                   
@@ -115,24 +116,24 @@
                                  ?>
                                     <?php foreach($arrRespuestas[$pregunta['id_pregunta']] as $key=>$value){ ?>  
                                         <?php if($key!="total") { ?>
-                                        <tr>
-                                            <td><?=$key;?></td>
-                                            <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?$arrRespuestas[$pregunta['id_pregunta']][$key]:'0';?></td>
-                                            <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?round($arrRespuestas[$pregunta['id_pregunta']][$key]*100/$arrRespuestas[$pregunta['id_pregunta']]['total'],2):'0';?></td>
-                                        </tr>                                    
-                                        <?php } ?>
-                                    <?php } ?>
-                                    <?php $total_row="<tr><th>Total</th><th>".$arrRespuestas[$pregunta['id_pregunta']]['total']."</th><th>100%</th></tr>"; ?>                                 
-                                <?php } ?>                            
-                                <?php if($pregunta['id_tipo_pregunta'] == 3 || $pregunta['id_tipo_pregunta'] == 4){ ?>
-                                        <?php foreach($pregunta['opciones'] as $key=>$value){ ?>                                
                                             <tr>
-                                                <td><?=$value;?></td>
+                                                <td><?=$key;?></td>
                                                 <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?$arrRespuestas[$pregunta['id_pregunta']][$key]:'0';?></td>
                                                 <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?round($arrRespuestas[$pregunta['id_pregunta']][$key]*100/$arrRespuestas[$pregunta['id_pregunta']]['total'],2):'0';?></td>
-                                            </tr>                                    
+                                            </tr>
                                         <?php } ?>
-                                        <?php $total_row="<tr><th>Total</th><th>".$arrRespuestas[$pregunta['id_pregunta']]['total']."</th><th>100%</th></tr>"; ?>                                    
+                                    <?php } ?>
+                                    <?php $preguntas[$pregunta_key]['total_row']="<tr><th>Total</th><th>".$arrRespuestas[$pregunta['id_pregunta']]['total']."</th><th>100%</th></tr>"; ?>
+                                <?php } ?>                            
+                                <?php if($pregunta['id_tipo_pregunta'] == 3 || $pregunta['id_tipo_pregunta'] == 4){ ?>
+                                    <?php foreach($pregunta['opciones'] as $key=>$value){ ?>
+                                        <tr>
+                                            <td><?=$value;?></td>
+                                            <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?$arrRespuestas[$pregunta['id_pregunta']][$key]:'0';?></td>
+                                            <td><?=(isset($arrRespuestas[$pregunta['id_pregunta']][$key]))?round($arrRespuestas[$pregunta['id_pregunta']][$key]*100/$arrRespuestas[$pregunta['id_pregunta']]['total'],2):'0';?></td>
+                                        </tr>
+                                    <?php } ?>
+                                    <?php $preguntas[$pregunta_key]['total_row']="<tr><th>Total</th><th>".$arrRespuestas[$pregunta['id_pregunta']]['total']."</th><th>100%</th></tr>"; ?>
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -154,6 +155,7 @@
             $('#grafica').foundation();
     <?php
         $cont=1;
+
         foreach($preguntas as $pregunta){
     ?>
             $('#panel-grafica-<?=$cont;?>').highcharts({
@@ -186,7 +188,7 @@
                     name: 'Carreras'
                 }]                
             });     
-            $("#tabla-datos-<?=$cont;?>").append("<?=$total_row;?>");
+            $("#tabla-datos-<?=$cont;?>").append("<?=$pregunta['total_row'];?>");
     <?php
         $cont++;
         }

@@ -24,12 +24,12 @@
                       $query="SELECT * FROM carreras WHERE id_facultad=? AND status=1";
                       $mysql->execute($query,array($_SESSION['id_facultad']));      
                       while($row=$mysql->getRow()){ 
-                        $selected='';
+                        $selected='';/*
                         if($modificar){
                           if($alumno['id_carrera']==$row['id_carrera']){
                             $selected='selected';
                           }
-                        }
+                        }*/
                   ?>
                       <option <?=$selected;?> value="<?=$row['id_carrera'];?>"><?=$row['nombre_carrera'];?></option>
                   <?php } ?>
