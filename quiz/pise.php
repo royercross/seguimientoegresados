@@ -94,7 +94,11 @@
 				$value="";
 				if(strlen(trim($pregunta['respuesta_numero'])) > 0)
 					$value=$pregunta['respuesta_numero'];
-				$campo="<input class='text' type='text' name='p_".$pregunta['id_pregunta']."' value='".$value."' required />";
+
+				$requerido="";
+				if($pregunta['requerido'] == 1)
+					$requerido="required";
+				$campo="<input class='text' type='text' name='p_".$pregunta['id_pregunta']."' value='".$value."' $requerido />";
 			}
 			if($pregunta['id_tipo_pregunta'] == 3){				
 				$query="SELECT * FROM c_opciones_multiples WHERE id_pregunta=? AND status=1";
@@ -104,11 +108,15 @@
 				$value=NULL;
 				if(strlen(trim($pregunta['respuesta_opcion_multiple'])) > 0)
 					$value=$pregunta['respuesta_opcion_multiple'];
-				$required="required";
+
+				$requerido="";
+				if($pregunta['requerido'] == 1)
+					$requerido="required";
+
 				while($row=$mysql->getRow()){	
 					$checked="";
 					if($value == $row['valor']) $checked="checked";
-					$campo.="<div class='radio-wrapper'><input class='radio' type='radio' name='p_".$pregunta['id_pregunta']."' value='".$row['valor']."' $required $checked /><span>".$row['opcion']."</span></div>";						
+					$campo.="<div class='radio-wrapper'><input class='radio' type='radio' name='p_".$pregunta['id_pregunta']."' value='".$row['valor']."' $requerido $checked /><span>".$row['opcion']."</span></div>";						
 				}						
 			}
 			if($pregunta['id_tipo_pregunta'] == 4){				
@@ -119,11 +127,15 @@
 				$value=NULL;
 				if(strlen(trim($pregunta['respuesta_opcion_multiple'])) > 0)
 					$value=$pregunta['respuesta_opcion_multiple'];
-				$required="required";
+				
+				$requerido="";
+				if($pregunta['requerido'] == 1)
+					$requerido="required";
+
 				while($row=$mysql->getRow()){	
 					$checked="";
 					if($value == $row['valor']) $checked="checked";
-					$campo.="<div class='radio-wrapper'><input class='radio' type='radio' name='p_".$pregunta['id_pregunta']."' value='".$row['valor']."' $required $checked /><span>".$row['opcion']."</span></div>";						
+					$campo.="<div class='radio-wrapper'><input class='radio' type='radio' name='p_".$pregunta['id_pregunta']."' value='".$row['valor']."' $requerido $checked /><span>".$row['opcion']."</span></div>";						
 				}	
 				$value_otro="";
 				if(strlen(trim($pregunta['respuesta_opcion_multiple'])) > 0)
