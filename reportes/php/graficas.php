@@ -249,6 +249,7 @@
         $cont=1;
 
         foreach($preguntas as $pregunta){
+                if($pregunta['id_tipo_pregunta']!=5){
     ?>
             $('#panel-grafica-<?=$cont;?>').highcharts({
                 data: {
@@ -281,7 +282,9 @@
                 }]                
             });     
             $("#tabla-datos-<?=$cont;?>").append("<?=$pregunta['total_row'];?>");
+            
     <?php
+            }
         $cont++;
         }
     ?>
